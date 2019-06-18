@@ -131,10 +131,10 @@ Mesh PointCloudIO::read( const eckit::PathName& path, std::vector<std::string>& 
             PointXY pxy;
             iss >> pxy.x() >> pxy.y();
 
-            xy( i, XX )      = pxy.x();
-            xy( i, YY )      = pxy.y();
-            lonlat( i, LON ) = pxy.x();
-            lonlat( i, LAT ) = pxy.y();
+            xy( i, (size_t)XX )      = pxy.x();
+            xy( i, (size_t)YY )      = pxy.y();
+            lonlat( i, (size_t)LON ) = pxy.x();
+            lonlat( i, (size_t)LAT ) = pxy.y();
             glb_idx( i )     = i + 1;
 
             for ( j = 0; iss && j < nb_fld; ++j )
@@ -203,7 +203,7 @@ void PointCloudIO::write( const eckit::PathName& path, const Mesh& mesh ) {
 
     // data
     for ( size_t i = 0; i < Npts; ++i ) {
-        f << lonlat( i, 0 ) << '\t' << lonlat( i, 1 );
+        f << lonlat( i, (size_t)0 ) << '\t' << lonlat( i, (size_t)1 );
         for ( size_t j = 0; j < Nfld; ++j )
             f << '\t' << vfvalues[j]( i );
         f << '\n';
@@ -255,7 +255,7 @@ void PointCloudIO::write( const eckit::PathName& path, const FieldSet& fieldset,
 
     // data
     for ( size_t i = 0; i < Npts; ++i ) {
-        f << lonlat( i, 0 ) << '\t' << lonlat( i, 1 );
+        f << lonlat( i, (size_t)0 ) << '\t' << lonlat( i, (size_t)1 );
         for ( size_t j = 0; j < Nfld; ++j )
             f << '\t' << vfvalues[j]( i );
         f << '\n';

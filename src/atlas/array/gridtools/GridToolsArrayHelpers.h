@@ -90,11 +90,11 @@ struct default_layout_t {
     struct get_layout;
 
     template <typename UInt, UInt... Indices>
-    struct get_layout<::gridtools::gt_integer_sequence<UInt, Indices...>> {
+    struct get_layout<::gridtools::meta::integer_sequence<UInt, Indices...>> {
         using type = ::gridtools::layout_map<Indices...>;
     };
 
-    using type = typename get_layout<::gridtools::make_gt_integer_sequence<::gridtools::uint_t, Rank>>::type;
+    using type = typename get_layout<::gridtools::meta::make_integer_sequence<::gridtools::uint_t, Rank>>::type;
 };
 
 template <typename Value, typename LayoutMap>
@@ -201,7 +201,7 @@ constexpr idx_t zero( idx_t ) {
 }
 
 template <idx_t... Is>
-ArrayStrides make_null_strides(::gridtools::gt_integer_sequence<idx_t, Is...> ) {
+ArrayStrides make_null_strides(::gridtools::meta::integer_sequence<idx_t, Is...> ) {
     return make_strides( zero( Is )... );
 }
 
@@ -209,15 +209,15 @@ template <typename UInt>
 struct my_apply_gt_integer_sequence {
     template <typename Container, template <UInt T> class Lambda, typename... ExtraTypes>
     ATLAS_HOST_DEVICE static constexpr Container apply( ExtraTypes const&... args_ ) {
-        static_assert( ( boost::is_same<Container, Container>::value ),
-                       "ERROR: apply_gt_integer_sequence only accepts a "
-                       "gt_integer_sequence type. Check the call" );
+        static_assert( ( std::is_same<Container, Container>::value ),
+                       "ERROR: apply_meta::integer_sequence only accepts a "
+                       "meta::integer_sequence type. Check the call" );
         return Container( args_... );
     }
 };
 
 template <typename UInt, UInt... Indices>
-struct my_apply_gt_integer_sequence<::gridtools::gt_integer_sequence<UInt, Indices...>> {
+struct my_apply_gt_integer_sequence<::gridtools::meta::integer_sequence<UInt, Indices...>> {
     /**
          @brief duplicated interface for the case in which the container is an
      aggregator
@@ -239,7 +239,7 @@ ArraySpec ATLAS_HOST make_spec( DataStore* gt_data_store_ptr, Dims... dims ) {
         using Layout          = typename DataStore::storage_info_t::layout_t;
         using Alignment       = typename DataStore::storage_info_t::alignment_t;
 
-        using seq = my_apply_gt_integer_sequence<::gridtools::make_gt_integer_sequence<int, sizeof...( dims )>>;
+        using seq = my_apply_gt_integer_sequence<::gridtools::meta::make_integer_sequence<int, sizeof...( dims )>>;
 
         ArraySpec spec(
             ArrayShape{(idx_t)dims...},
@@ -251,7 +251,7 @@ ArraySpec ATLAS_HOST make_spec( DataStore* gt_data_store_ptr, Dims... dims ) {
     }
     else {
         return ArraySpec( make_shape( {dims...} ),
-                          make_null_strides(::gridtools::make_gt_integer_sequence<idx_t, sizeof...( dims )>() ) );
+                          make_null_strides(::gridtools::meta::make_integer_sequence<idx_t, sizeof...( dims )>() ) );
     }
 }
 #endif
