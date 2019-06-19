@@ -47,13 +47,29 @@ ArrayView<Value, Rank, AccessMode>::ArrayView( const ArrayView& other ) :
     // TODO: check compatibility
 }
 
+template<typename StorageInfo, int Rank, typename IS>
+struct StoragePropBuilder;
+
+template<typename StorageInfo, int Rank, std::size_t...I >
+struct StoragePropBuilder<StorageInfo, Rank, ::gridtools::meta::integer_sequence<std::size_t, I...> > {
+
+  static host_device_array<ArrayStrides::value_type, Rank> buildStrides(const StorageInfo& storage_info){
+    return host_device_array<ArrayStrides::value_type, Rank>{storage_info.template stride<I>()...};
+  }
+//  static host_device_array<ArrayShape::value_type, Rank> buildShapes(){
+//    return host_device_array<ArrayStrides::value_type, Rank>{I...};
+//  }
+
+};
+
+
 template <typename Value, int Rank, Intent AccessMode>
 ArrayView<Value, Rank, AccessMode>::ArrayView( data_view_t data_view, const Array& array ) :
     gt_data_view_( data_view ),
     data_store_orig_( array.data_store() ),
     array_( &array ) {
     if ( data_view.valid() ) {
-         using seq = ::gridtools::apply_gt_integer_sequence<::gridtools::make_gt_integer_sequence<int, Rank>>;
+         //using seq = ::gridtools::apply_gt_integer_sequence<::gridtools::make_gt_integer_sequence<int, Rank>>;
 
         constexpr static unsigned int ndims = data_view_t::data_store_t::storage_info_t::ndims;
 
@@ -63,18 +79,21 @@ ArrayView<Value, Rank, AccessMode>::ArrayView( data_view_t data_view, const Arra
         auto storage_info_ =
             *( ( reinterpret_cast<data_store_t*>( const_cast<void*>( array.storage() ) ) )->get_storage_info_ptr() );
 
-        auto stridest = seq::template apply<
-            host_device_array<ArrayStrides::value_type, Rank>,
-            atlas::array::gridtools::get_stride_component<ArrayStrides::value_type>::template get_component>(
-            &( storage_info_ ) );
-        auto shapet = seq::template apply<
-            host_device_array<ArrayShape::value_type, Rank>,
-            atlas::array::gridtools::get_shape_component<ArrayStrides::value_type>::template get_component>(
-            &( storage_info_ ) );
+//        auto stridest = seq::template apply<
+//            host_device_array<ArrayStrides::value_type, Rank>,
+//            atlas::array::gridtools::get_stride_component<ArrayStrides::value_type>::template get_component>(
+//            &( storage_info_ ) );
+//        auto shapet = seq::template apply<
+//            host_device_array<ArrayShape::value_type, Rank>,
+//            atlas::array::gridtools::get_shape_component<ArrayStrides::value_type>::template get_component>(
+//            &( storage_info_ ) );
+
+        auto stridest = StoragePropBuilder<storage_info_ty, Rank, ::gridtools::meta::make_integer_sequence<std::size_t, Rank>>::buildStrides(storage_info_);
+
 
         for ( int i = 0; i < Rank; ++i ) {
             strides_[i] = stridest[i];
-            shape_[i]   = shapet[i];
+//            shape_[i]   = shapet[i];
         }
 
         size_ = storage_info_.total_length();
