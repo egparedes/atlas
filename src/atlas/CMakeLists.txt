@@ -717,7 +717,7 @@ if( ATLAS_HAVE_OMP_CXX )
 endif()
 
 if( ATLAS_HAVE_GRIDTOOLS_STORAGE )
-  target_link_libraries( atlas PUBLIC gridtools::storage )
+  target_link_libraries( atlas PUBLIC GridTools::gridtools )
 endif()
 
 if( ATLAS_HAVE_ACC )
