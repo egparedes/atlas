@@ -54,11 +54,11 @@ template<typename StorageInfo, int Rank, std::size_t...I >
 struct StoragePropBuilder<StorageInfo, Rank, ::gridtools::meta::integer_sequence<std::size_t, I...> > {
 
   static host_device_array<ArrayStrides::value_type, Rank> buildStrides(const StorageInfo& storage_info){
-    return host_device_array<ArrayStrides::value_type, Rank>{storage_info.template stride<I>()...};
+    return host_device_array<ArrayStrides::value_type, Rank>{(ArrayStrides::value_type)storage_info.template stride<I>()...};
   }
-//  static host_device_array<ArrayShape::value_type, Rank> buildShapes(){
-//    return host_device_array<ArrayStrides::value_type, Rank>{I...};
-//  }
+  static host_device_array<ArrayShape::value_type, Rank> buildShapes(const StorageInfo& storage_info){
+    return host_device_array<ArrayShape::value_type, Rank>{storage_info.template total_length<I>()...};
+  }
 
 };
 
@@ -89,11 +89,12 @@ ArrayView<Value, Rank, AccessMode>::ArrayView( data_view_t data_view, const Arra
 //            &( storage_info_ ) );
 
         auto stridest = StoragePropBuilder<storage_info_ty, Rank, ::gridtools::meta::make_integer_sequence<std::size_t, Rank>>::buildStrides(storage_info_);
+        auto shapet = StoragePropBuilder<storage_info_ty, Rank, ::gridtools::meta::make_integer_sequence<std::size_t, Rank>>::buildShapes(storage_info_);
 
 
         for ( int i = 0; i < Rank; ++i ) {
             strides_[i] = stridest[i];
-//            shape_[i]   = shapet[i];
+            shape_[i]   = shapet[i];
         }
 
         size_ = storage_info_.total_length();
