@@ -653,6 +653,9 @@ ecbuild_add_library( TARGET atlas
 )
 if( ATLAS_HAVE_GRIDTOOLS_STORAGE )
 target_link_libraries(atlas PUBLIC GridTools::gridtools)
+target_compile_definitions(GridTools::gridtools INTERFACE BOOST_OPTIONAL_CONFIG_USE_OLD_IMPLEMENTATION_OF_OPTIONAL)
+target_compile_definitions(GridTools::gridtools INTERFACE BOOST_OPTIONAL_USE_OLD_DEFINITION_OF_NONE)
+
 
 endif( ATLAS_HAVE_GRIDTOOLS_STORAGE )
 
