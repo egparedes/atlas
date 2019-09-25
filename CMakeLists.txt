@@ -149,14 +149,15 @@ endif()
 ecbuild_add_option(
   FEATURE GRIDTOOLS_STORAGE
   DESCRIPTION "Arrays internally use GridTools storage layer"
-  REQUIRED_PACKAGES "PROJECT gridtools_storage" )
+  REQUIRED_PACKAGES "PROJECT GridTools" )
 
 if( ATLAS_HAVE_GRIDTOOLS_STORAGE )
 
   set( ATLAS_GRIDTOOLS_STORAGE_BACKEND_HOST 1 )
   set( ATLAS_GRIDTOOLS_STORAGE_BACKEND_CUDA 0 )
 
-  if( GRIDTOOLS_HAVE_CUDA )
+  if( GRIDTOOLS_HAS_BACKEND_CUDA )
+    find_package(CUDA)
     ecbuild_info( "Gridtools found with CUDA support" )
     set( ATLAS_GRIDTOOLS_STORAGE_BACKEND_HOST 0 )
     set( ATLAS_GRIDTOOLS_STORAGE_BACKEND_CUDA 1 )
