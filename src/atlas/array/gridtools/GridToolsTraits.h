@@ -29,7 +29,7 @@ namespace gridtools {
 using backend_t = ::gridtools::backend::cuda;
 using storage_traits = ::gridtools::storage_traits<backend_t>;
 #elif ATLAS_GRIDTOOLS_STORAGE_BACKEND_HOST
-using backend_t = ::gridtools::backend::mc;
+using backend_t = ::gridtools::backend::x86;
 using storage_traits = ::gridtools::storage_traits<backend_t>;
 #else
 #error ATLAS_GRIDTOOLS_STORAGE_BACKEND_<HOST,CUDA> not set
