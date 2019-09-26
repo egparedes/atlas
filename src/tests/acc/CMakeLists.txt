@@ -21,7 +21,7 @@ if( ATLAS_HAVE_GRIDTOOLS_STORAGE AND GRIDTOOLS_HAS_BACKEND_CUDA AND ENABLE_TESTS
     LINKER_LANGUAGE Fortran
     ENVIRONMENT ${ATLAS_TEST_ENVIRONMENT} ATLAS_RUN_NGPUS=1
   )
-  target_link_libraries( atlas_test_unified_memory_with_openacc ${ACC_Fortran_FLAGS} gridtools::storage )
+  target_link_libraries( atlas_test_unified_memory_with_openacc ${ACC_Fortran_FLAGS} GridTools::gridtools )
 
 
   add_fctest( 
