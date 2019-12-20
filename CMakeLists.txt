@@ -155,6 +155,7 @@ endif()
       set( THREADS_PREFER_PTHREAD_FLAG 1 )
     endif()
 
+cmake_policy( SET CMP0057 NEW ) # workaround bug within GridToolsConfig.cmake submitted upstream
 ecbuild_add_option(
   FEATURE GRIDTOOLS_STORAGE
   DESCRIPTION "Arrays internally use GridTools storage layer"
