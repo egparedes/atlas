@@ -14,6 +14,7 @@
 #include <chrono>
 #include <exception>
 #include <thread>
+#include <string>
 
 #include "eckit/config/LibEcKit.h"
 #include "eckit/config/Resource.h"
@@ -79,10 +80,6 @@ using eckit::types::is_approximately_equal;
     }                                                                                            \
     if ( ( _num_subsections - 1 ) == _subsection )                                               \
     ATLAS_TRACE_SCOPE( _test_subsection )
-
-#ifndef SETUP
-#define SETUP( name )
-#endif
 
 #ifdef EXPECT_EQ
 #undef EXPECT_EQ

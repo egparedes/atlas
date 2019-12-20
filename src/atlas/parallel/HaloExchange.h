@@ -8,6 +8,7 @@
  * nor does it submit to any jurisdiction.
  */
 
+/// @file   HaloExchange.h
 /// @author Willem Deconinck
 /// @date   Nov 2013
 
@@ -48,6 +49,8 @@ public:  // methods
     const std::string& name() const { return name_; }
 
     void setup( const int part[], const idx_t remote_idx[], const int base, idx_t size );
+
+    void setup( const int part[], const idx_t remote_idx[], const int base, idx_t size, idx_t halo_begin );
 
     //  template <typename DATA_TYPE>
     //  void execute( DATA_TYPE field[], idx_t nb_vars ) const;

@@ -50,6 +50,9 @@ parallel/mpi/mpi.cc
 parallel/mpi/mpi.h
 parallel/omp/omp.cc
 parallel/omp/omp.h
+parallel/omp/copy.h
+parallel/omp/fill.h
+parallel/omp/sort.h
 )
 
 list( APPEND atlas_grid_srcs
@@ -116,6 +119,8 @@ grid/Vertical.cc
 grid/Stencil.h
 grid/StencilComputer.h
 grid/StencilComputer.cc
+grid/StructuredPartitionPolygon.h
+grid/StructuredPartitionPolygon.cc
 
 grid/detail/grid/GridBuilder.h
 grid/detail/grid/GridBuilder.cc
@@ -152,6 +157,10 @@ grid/detail/partitioner/MatchingMeshPartitionerLonLatPolygon.cc
 grid/detail/partitioner/MatchingMeshPartitionerLonLatPolygon.h
 grid/detail/partitioner/MatchingMeshPartitionerSphericalPolygon.cc
 grid/detail/partitioner/MatchingMeshPartitionerSphericalPolygon.h
+grid/detail/partitioner/MatchingFunctionSpacePartitioner.h
+grid/detail/partitioner/MatchingFunctionSpacePartitioner.cc
+grid/detail/partitioner/MatchingFunctionSpacePartitionerLonLatPolygon.cc
+grid/detail/partitioner/MatchingFunctionSpacePartitionerLonLatPolygon.h
 grid/detail/partitioner/Partitioner.cc
 grid/detail/partitioner/Partitioner.h
 
@@ -323,6 +332,15 @@ output/Output.h
 output/Output.cc
 output/Gmsh.h
 output/Gmsh.cc
+output/detail/GmshIO.cc
+output/detail/GmshIO.h
+output/detail/GmshImpl.cc
+output/detail/GmshImpl.h
+output/detail/GmshInterface.cc
+output/detail/GmshInterface.h
+output/detail/PointCloudIO.cc
+output/detail/PointCloudIO.h
+
 )
 
 list( APPEND atlas_field_srcs
@@ -370,6 +388,8 @@ functionspace/detail/NodeColumnsInterface.cc
 functionspace/detail/NodeColumns_FieldStatistics.cc
 functionspace/detail/SpectralInterface.h
 functionspace/detail/SpectralInterface.cc
+functionspace/detail/StructuredColumns.h
+functionspace/detail/StructuredColumns.cc
 functionspace/detail/StructuredColumnsInterface.h
 functionspace/detail/StructuredColumnsInterface.cc
 functionspace/detail/StructuredColumns_setup.cc
@@ -545,10 +565,6 @@ array/native/NativeMakeView.cc
 endif()
 
 list( APPEND atlas_util_srcs
-output/detail/GmshIO.cc
-output/detail/GmshIO.h
-output/detail/PointCloudIO.cc
-output/detail/PointCloudIO.h
 parallel/Checksum.cc
 parallel/Checksum.h
 parallel/GatherScatter.cc
@@ -578,6 +594,7 @@ util/Rotation.h
 util/SphericalPolygon.cc
 util/SphericalPolygon.h
 util/UnitSphere.h
+util/vector.h
 util/detail/BlackMagic.h
 util/detail/Cache.h
 util/detail/Debug.h
